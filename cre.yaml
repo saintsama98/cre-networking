@@ -1,0 +1,91 @@
+# CRE Workflow Configuration
+# This file defines the workflow deployment configuration for CRE
+# Workflows communicate via HTTP using CRE's HTTP trigger and HTTP client capabilities
+
+version: "1.0"
+
+workflows:
+  # Receiver Workflow - Accepts HTTP triggers from other workflows
+  receiver-workflow:
+    name: "Receiver Workflow"
+    description: "Workflow that receives HTTP triggers and processes incoming data from other workflows"
+    entrypoint: "workflows.ReceiverWorkflowHandler"
+    triggers:
+      - type: "http"
+        config:
+          # Authorized keys for HTTP trigger authentication
+          # Add your EVM addresses here for production
+          # Each key must match the public key used to sign requests
+          authorizedKeys: []
+          # Example configuration:
+          # authorizedKeys:
+          #   - type: "ECDSA_EVM"
+          #     publicKey: "0xYourEVMAddress"
+    
+    # Workflow metadata
+    metadata:
+      version: "1.0.0"
+      author: "CRE Networking Test"
+      tags:
+        - "networking"
+        - "http-trigger"
+        - "receiver"
+
+  # Sender Workflow - Sends HTTP requests to other workflows
+  sender-workflow:
+    name: "Sender Workflow"
+    description: "Workflow that sends HTTP POST requests to other workflows using CRE HTTP client"
+    entrypoint: "workflows.SenderWorkflowHandler"
+    triggers:
+      - type: "http"
+        config:
+          # Authorized keys for HTTP trigger authentication
+          # Add your EVM addresses here for production
+          authorizedKeys: []
+          # Example configuration:
+          # authorizedKeys:
+          #   - type: "ECDSA_EVM"
+          #     publicKey: "0xYourEVMAddress"
+    
+    # Workflow metadata
+    metadata:
+      version: "1.0.0"
+      author: "CRE Networking Test"
+      tags:
+        - "networking"
+        - "http-client"
+        - "sender"
+
+# Environment configuration
+environment:
+  # Gateway URL for CRE
+  # This is the base URL where workflows are accessible
+  gatewayUrl: "https://01.gateway.zone-a.cre.chain.link"
+  
+  # Network configuration
+  network:
+    name: "mainnet" # Use "testnet" for testing environments
+
+# Deployment settings
+deployment:
+  # Number of DON (Decentralized Oracle Network) nodes
+  # More nodes provide better fault tolerance but higher cost
+  nodeCount: 4
+  
+  # Timeout settings
+  timeout:
+    workflow: "5m"  # Maximum execution time for a workflow
+    http: "30s"     # Maximum time for HTTP requests
+
+# Communication Configuration
+# Workflows communicate using:
+# 1. HTTP POST requests via CRE's HTTP client capability
+# 2. JSON payloads with structured input/output
+# 3. JWT authentication with cryptographic signatures
+# 4. Cache settings to prevent duplicate executions across DON nodes
+
+# Testing Configuration
+# For local testing and simulation:
+# - Use CRE CLI: cre workflow simulate
+# - Set up test receiver workflow URL in environment variables
+# - Use cre-http-trigger tool for local proxy testing
