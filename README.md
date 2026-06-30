@@ -283,13 +283,13 @@ This starts a local proxy server on port 2000 that handles JWT generation automa
 
 This implementation follows:
 
-- ✅ **CRE SDK v1.0.0** standards
-- ✅ **HTTP trigger** best practices
-- ✅ **Error handling** patterns
-- ✅ **Structured logging**
-- ✅ **Configuration management**
-- ✅ **Test coverage**
-- ✅ **Documentation** standards
+**CRE SDK v1.0.0** standards
+**HTTP trigger** best practices
+**Error handling** patterns
+**Structured logging**
+**Configuration management**
+**Test coverage**
+**Documentation** standards
 
 ## Troubleshooting
 
